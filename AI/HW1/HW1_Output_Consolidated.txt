@@ -1,0 +1,463 @@
+Cade Nichols - 107826036 - 10 / 6/ 2023
+
+Introduction: This assignment we were told to create a program that could solve various n-tile sliding puzzles using JSON files
+my code does as follows:
+1. Reads the data from the JSON file
+2. Then immediately starts into the A* search algorithm because i found that one to be the least daunting to implement
+3. Generates the starting node using the "0" in the JSON file
+4. Generates the manhatten distance to each node from the start node
+5. Orders them into a priority queue 
+6. Then uses a while loop to generate all the possible combinations using each nodes heuristics functionality
+7. Filter out the ones that lead to a goal rather than a dead end
+8. Explore the ones that succeed and go through those generating the manhatten distance on each one until it finds the one that is the least costly
+9. Then it returns the winning path
+10. Then it follows the path again in a loop to print out the individual steps
+11. then using the enumerate function in the previous step it is able to count the number of steps it took and prints that info out as well
+12. Then leaving the JSON raw data unchanged, it uses the same info to generate the graph search
+13. Creates a set object to hold the node items in
+14. creates an empty map starting at the designated start, or "0" node, again using the queue and dequeue functions
+15. sets up a counter for the generated states to be passed in return to show the info to the user
+16. for each generated map it inserts the new visited node into the Queue via FIFO logic, i.e. depth first search
+17. Then it increments the counter, checks if it is at the goal, if not, then puts the current node in the visited nodes tuple
+18. Generates the next move and adds that move to the list for printing later
+19. repeats this cycle for all possible outcomes
+20. then returns the one that gets to the goal
+21. Repeat steps 10 and 11 this time for the graph search function
+
+
+
+
+
+
+
+
+
+
+
+import json
+import queue as Q
+from collections import deque
+
+# Define possible moves (up, down, left, right)
+MOVES = [(0, -1), (0, 1), (-1, 0), (1, 0)]
+MOVE_NAMES = ['Left', 'Right', 'Up', 'Down']
+
+# Function to calculate the Manhattan distance heuristic
+# borrowed this function snippet from stack overflow
+def manhattan_distance(state):
+    distance = 0
+    for i in range(len(state)):
+        for j in range(len(state[0])):
+            if state[i][j] != 0:
+                x, y = divmod(state[i][j], len(state))
+                distance += abs(x - i) + abs(y - j)
+    return distance
+
+# Function to check if a move is valid
+def is_valid_move(x, y, size):
+    return 0 <= x < size and 0 <= y < size
+
+# Function to find the blank tile in the current state
+def find_blank_tile(state):
+    for i in range(len(state)):
+        for j in range(len(state[0])):
+            if state[i][j] == 0:
+                return i, j
+
+# Function to generate new states by making valid moves
+def generate_states(state):
+    x, y = find_blank_tile(state)
+    new_states = []
+    for dx, dy in MOVES:
+        new_x, new_y = x + dx, y + dy
+        if is_valid_move(new_x, new_y, len(state)):
+            new_state = [row[:] for row in state]  # Create a copy of the current state
+            new_state[x][y], new_state[new_x][new_y] = new_state[new_x][new_y], new_state[x][y]
+            new_states.append((new_state, MOVE_NAMES[MOVES.index((dx, dy))]))
+    return new_states
+
+# Function to solve the puzzle using A* search
+# used chatgpt to help with this function snippet
+# as i am bad at solving these puzzles personally
+# let alone teaching a computer how to do it
+def solve_puzzle_A(start):
+    visited = set()
+    start_node = (start, 0, manhattan_distance(start), [])
+    frontier = Q.PriorityQueue()
+    frontier.put(start_node)
+    generated_states = 0  # Counter for generated states
+    explored_states = 0   # Counter for explored states
+
+    while not frontier.empty():
+        current_state, cost, heuristic, path = frontier.get()
+        if current_state == goal:
+            return path, generated_states, explored_states
+
+        if tuple(map(tuple, current_state)) in visited:
+            continue
+
+        visited.add(tuple(map(tuple, current_state)))
+        explored_states += 1
+
+        for next_state, move_name in generate_states(current_state):
+            generated_states += 1
+            next_cost = cost + 1
+            next_heuristic = manhattan_distance(next_state)
+            next_path = path + [move_name]
+            frontier.put((next_state, next_cost, next_cost + next_heuristic, next_path))
+
+    return None, generated_states, explored_states
+
+def solve_puzzle_Graph(initial_state):
+    visited = set()
+    queue = deque([(initial_state, [])])  # Queue stores (state, path)
+    generated_states = 0  # Counter for generated states
+
+    while queue:
+        current_state, path = queue.popleft()
+        generated_states += 1
+        if current_state == goal:
+            return path, generated_states, len(visited)
+
+        if tuple(map(tuple, current_state)) in visited:
+            continue
+
+        visited.add(tuple(map(tuple, current_state)))
+
+        for next_state, move_name in generate_states(current_state):
+            next_path = path + [move_name]
+            queue.append((next_state, next_path))
+
+    return None, generated_states, len(visited)
+
+# Function to print the puzzle state
+def print_puzzle(state):
+    for row in state:
+        print(" ".join(map(str, row)))
+
+# Function to read puzzle information from JSON data
+def read_puzzle_from_json(json_data):
+    puzzle_data = json.loads(json_data)
+    n = puzzle_data["n"]
+    start = puzzle_data["start"]
+    goal = puzzle_data["goal"]
+    return n, start, goal
+
+# Main function
+if __name__ == "__main__":
+    # Read puzzle information from JSON
+    json_data = """
+    {
+        "n": 3,
+        "start": [
+            [7, 2, 4],
+            [5, 0, 6],
+            [8, 3, 1]
+        ],
+        "goal": [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8]
+        ]
+    }
+    """
+    
+
+# This first section generates the A* search, 
+# because i found that one easier to implement so i started with it
+    n, start, goal = read_puzzle_from_json(json_data)
+    print("A* Search")
+    print("Start State:")
+    print_puzzle(start)
+
+    solution_path, generated_states, explored_states = solve_puzzle_A(start)
+
+    if solution_path:
+        print("\nSolution Path:")
+        for step, move in enumerate(solution_path, 1):
+            print(f"Step {step}: {move}")
+        print(f"\nSolution Length: {len(solution_path)} moves")
+        print(f"Number of States Generated: {generated_states}")
+        print(f"Number of States Explored: {explored_states}")
+        print("\nGoal State:")
+        print_puzzle(goal)
+    else:
+        print("\nNo solution found.")
+
+    print()
+    print()
+    print()
+    print()
+    print()
+    
+# Decided to mash the 2 search algorithms together since they both use
+# similar code blocks for the basic properties of the 8 slide puzzle
+# to help consolidate the code
+
+# but this section is the graph search section
+    print("Graph Search")
+    print("Start State:")
+    print_puzzle(start)
+    
+    solution_path, generated_states, explored_states = solve_puzzle_Graph(start)
+    if solution_path:
+        print("\nSolution Path:")
+        for step, move in enumerate(solution_path, 1):
+            print(f"Step {step}: {move}")
+        print(f"\nSolution Length: {len(solution_path)} moves")
+        print(f"Number of States Generated: {generated_states}")
+        print(f"Number of States Explored: {explored_states}")
+# Print the final state
+        final_state = start
+        for move in solution_path:
+            x, y = find_blank_tile(final_state)
+            move_idx = MOVE_NAMES.index(move)
+            dx, dy = MOVES[move_idx]
+            new_x, new_y = x + dx, y + dy
+            final_state[x][y], final_state[new_x][new_y] = final_state[new_x][new_y], final_state[x][y]
+        print("\nGoal State:")
+        print_puzzle(goal)
+    else:
+        print("\nNo solution found.")
+
+
+
+
+
+
+
+
+
+
+
+
+Start State:
+7 2 4
+5 0 6
+8 3 1
+
+Solution Path:
+Step 1: Up
+Step 2: Left
+Step 3: Down
+Step 4: Right
+Step 5: Up
+Step 6: Left
+Step 7: Down
+Step 8: Right
+Step 9: Up
+Step 10: Right
+Step 11: Down
+Step 12: Left
+Step 13: Down
+Step 14: Left
+Step 15: Up
+Step 16: Right
+Step 17: Right
+Step 18: Down
+Step 19: Left
+Step 20: Up
+Step 21: Right
+Step 22: Up
+Step 23: Left
+Step 24: Down
+Step 25: Left
+Step 26: Up
+Step 27: Right
+Step 28: Down
+Step 29: Down
+Step 30: Left
+Step 31: Up
+Step 32: Right
+Step 33: Right
+Step 34: Down
+Step 35: Left
+Step 36: Up
+Step 37: Left
+Step 38: Down
+Step 39: Right
+Step 40: Right
+Step 41: Up
+Step 42: Left
+Step 43: Left
+Step 44: Down
+Step 45: Right
+Step 46: Right
+Step 47: Up
+Step 48: Up
+Step 49: Left
+Step 50: Down
+Step 51: Right
+Step 52: Down
+Step 53: Left
+Step 54: Left
+Step 55: Up
+Step 56: Right
+Step 57: Right
+Step 58: Down
+Step 59: Left
+Step 60: Up
+Step 61: Left
+Step 62: Down
+Step 63: Right
+Step 64: Right
+Step 65: Up
+Step 66: Left
+Step 67: Left
+Step 68: Down
+Step 69: Right
+Step 70: Up
+Step 71: Right
+Step 72: Down
+Step 73: Left
+Step 74: Left
+Step 75: Up
+Step 76: Right
+Step 77: Down
+Step 78: Right
+Step 79: Up
+Step 80: Left
+Step 81: Down
+Step 82: Right
+Step 83: Up
+Step 84: Left
+Step 85: Left
+Step 86: Down
+Step 87: Right
+Step 88: Right
+Step 89: Up
+Step 90: Up
+Step 91: Left
+Step 92: Down
+Step 93: Right
+Step 94: Down
+Step 95: Left
+Step 96: Up
+Step 97: Up
+Step 98: Right
+Step 99: Down
+Step 100: Left
+Step 101: Down
+Step 102: Left
+Step 103: Up
+Step 104: Right
+Step 105: Right
+Step 106: Down
+Step 107: Left
+Step 108: Up
+Step 109: Left
+Step 110: Down
+Step 111: Right
+Step 112: Right
+Step 113: Up
+Step 114: Left
+Step 115: Left
+Step 116: Down
+Step 117: Right
+Step 118: Up
+Step 119: Right
+Step 120: Up
+Step 121: Left
+Step 122: Down
+Step 123: Down
+Step 124: Right
+Step 125: Up
+Step 126: Left
+Step 127: Up
+Step 128: Right
+Step 129: Down
+Step 130: Down
+Step 131: Left
+Step 132: Left
+Step 133: Up
+Step 134: Right
+Step 135: Right
+Step 136: Down
+Step 137: Left
+Step 138: Up
+Step 139: Right
+Step 140: Down
+Step 141: Left
+Step 142: Up
+Step 143: Left
+Step 144: Down
+Step 145: Right
+Step 146: Right
+Step 147: Up
+Step 148: Left
+Step 149: Down
+Step 150: Left
+Step 151: Up
+Step 152: Right
+Step 153: Right
+Step 154: Down
+Step 155: Left
+Step 156: Up
+Step 157: Left
+Step 158: Down
+Step 159: Right
+Step 160: Up
+Step 161: Left
+Step 162: Down
+Step 163: Right
+Step 164: Right
+Step 165: Up
+Step 166: Up
+Step 167: Left
+Step 168: Left
+
+Solution Length: 168 moves
+Number of States Generated: 13576
+Number of States Explored: 5256
+
+Goal State:
+0 1 2
+3 4 5
+6 7 8
+
+
+
+
+
+Start State:
+7 2 4
+5 0 6
+8 3 1
+
+Solution Path:
+Step 1: Left
+Step 2: Up
+Step 3: Right
+Step 4: Down
+Step 5: Right
+Step 6: Down
+Step 7: Left
+Step 8: Left
+Step 9: Up
+Step 10: Right
+Step 11: Right
+Step 12: Down
+Step 13: Left
+Step 14: Left
+Step 15: Up
+Step 16: Right
+Step 17: Right
+Step 18: Up
+Step 19: Left
+Step 20: Left
+Step 21: Down
+Step 22: Right
+Step 23: Right
+Step 24: Up
+Step 25: Left
+Step 26: Left
+
+Solution Length: 26 moves
+Number of States Generated: 403100
+Number of States Explored: 164918
+
+Goal State:
+0 1 2
+3 4 5
+6 7 8
+Press any key to continue . . .

@@ -1,0 +1,549 @@
+A* Code:
+import json
+import queue as Q
+
+# Define possible moves (up, down, left, right)
+MOVES = [(0, -1), (0, 1), (-1, 0), (1, 0)]
+MOVE_NAMES = ['Left', 'Right', 'Up', 'Down']
+
+# Function to calculate the Manhattan distance heuristic
+def manhattan_distance(state):
+    distance = 0
+    for i in range(len(state)):
+        for j in range(len(state[0])):
+            if state[i][j] != 0:
+                x, y = divmod(state[i][j], len(state))
+                distance += abs(x - i) + abs(y - j)
+    return distance
+
+# Function to check if a move is valid
+def is_valid_move(x, y):
+    return 0 <= x < len(goal) and 0 <= y < len(goal[0])
+
+# Function to find the blank tile in the current state
+def find_blank_tile(state):
+    for i in range(len(state)):
+        for j in range(len(state[0])):
+            if state[i][j] == 0:
+                return i, j
+
+# Function to generate new states by making valid moves
+def generate_states(state):
+    x, y = find_blank_tile(state)
+    new_states = []
+    for dx, dy in MOVES:
+        new_x, new_y = x + dx, y + dy
+        if is_valid_move(new_x, new_y):
+            new_state = [row[:] for row in state]  # Create a copy of the current state
+            new_state[x][y], new_state[new_x][new_y] = new_state[new_x][new_y], new_state[x][y]
+            new_states.append((new_state, MOVE_NAMES[MOVES.index((dx, dy))]))
+    return new_states
+
+# Function to solve the puzzle using A* search
+def solve_puzzle(start):
+    visited = set()
+    start_node = (start, 0, manhattan_distance(start), [])
+    frontier = Q.PriorityQueue()
+    frontier.put(start_node)
+    generated_states = 0  # Counter for generated states
+    explored_states = 0   # Counter for explored states
+
+    while not frontier.empty():
+        current_state, cost, heuristic, path = frontier.get()
+        if current_state == goal:
+            return path, generated_states, explored_states
+
+        if tuple(map(tuple, current_state)) in visited:
+            continue
+
+        visited.add(tuple(map(tuple, current_state)))
+        explored_states += 1
+
+        for next_state, move_name in generate_states(current_state):
+            generated_states += 1
+            next_cost = cost + 1
+            next_heuristic = manhattan_distance(next_state)
+            next_path = path + [move_name]
+            frontier.put((next_state, next_cost, next_cost + next_heuristic, next_path))
+
+    return None, generated_states, explored_states
+
+# Function to print the puzzle state
+def print_puzzle(state):
+    for row in state:
+        print(" ".join(map(str, row)))
+
+# Function to read puzzle information from JSON data
+def read_puzzle_from_json(json_data):
+    puzzle_data = json.loads(json_data)
+    n = puzzle_data["n"]
+    start = puzzle_data["start"]
+    goal = puzzle_data["goal"]
+    return n, start, goal
+
+# Main function
+if __name__ == "__main__":
+    # Read puzzle information from JSON
+    json_data = """
+    {
+        "n": 3,
+        "start": [
+            [7, 2, 4],
+            [5, 0, 6],
+            [8, 3, 1]
+        ],
+        "goal": [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8]
+        ]
+    }
+    """
+    n, start, goal = read_puzzle_from_json(json_data)
+
+    print("Start State:")
+    print_puzzle(start)
+
+    solution_path, generated_states, explored_states = solve_puzzle(start)
+
+    if solution_path:
+        print("\nSolution Path:")
+        for step, move in enumerate(solution_path, 1):
+            print(f"Step {step}: {move}")
+        print(f"\nSolution Length: {len(solution_path)} moves")
+        print(f"Number of States Generated: {generated_states}")
+        print(f"Number of States Explored: {explored_states}")
+        print("\nGoal State:")
+        print_puzzle(goal)
+    else:
+        print("\nNo solution found.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Start State:
+7 2 4
+5 0 6
+8 3 1
+
+Solution Path:
+Step 1: Up
+Step 2: Left
+Step 3: Down
+Step 4: Right
+Step 5: Up
+Step 6: Left
+Step 7: Down
+Step 8: Right
+Step 9: Up
+Step 10: Right
+Step 11: Down
+Step 12: Left
+Step 13: Down
+Step 14: Left
+Step 15: Up
+Step 16: Right
+Step 17: Right
+Step 18: Down
+Step 19: Left
+Step 20: Up
+Step 21: Right
+Step 22: Up
+Step 23: Left
+Step 24: Down
+Step 25: Left
+Step 26: Up
+Step 27: Right
+Step 28: Down
+Step 29: Down
+Step 30: Left
+Step 31: Up
+Step 32: Right
+Step 33: Right
+Step 34: Down
+Step 35: Left
+Step 36: Up
+Step 37: Left
+Step 38: Down
+Step 39: Right
+Step 40: Right
+Step 41: Up
+Step 42: Left
+Step 43: Left
+Step 44: Down
+Step 45: Right
+Step 46: Right
+Step 47: Up
+Step 48: Up
+Step 49: Left
+Step 50: Down
+Step 51: Right
+Step 52: Down
+Step 53: Left
+Step 54: Left
+Step 55: Up
+Step 56: Right
+Step 57: Right
+Step 58: Down
+Step 59: Left
+Step 60: Up
+Step 61: Left
+Step 62: Down
+Step 63: Right
+Step 64: Right
+Step 65: Up
+Step 66: Left
+Step 67: Left
+Step 68: Down
+Step 69: Right
+Step 70: Up
+Step 71: Right
+Step 72: Down
+Step 73: Left
+Step 74: Left
+Step 75: Up
+Step 76: Right
+Step 77: Down
+Step 78: Right
+Step 79: Up
+Step 80: Left
+Step 81: Down
+Step 82: Right
+Step 83: Up
+Step 84: Left
+Step 85: Left
+Step 86: Down
+Step 87: Right
+Step 88: Right
+Step 89: Up
+Step 90: Up
+Step 91: Left
+Step 92: Down
+Step 93: Right
+Step 94: Down
+Step 95: Left
+Step 96: Up
+Step 97: Up
+Step 98: Right
+Step 99: Down
+Step 100: Left
+Step 101: Down
+Step 102: Left
+Step 103: Up
+Step 104: Right
+Step 105: Right
+Step 106: Down
+Step 107: Left
+Step 108: Up
+Step 109: Left
+Step 110: Down
+Step 111: Right
+Step 112: Right
+Step 113: Up
+Step 114: Left
+Step 115: Left
+Step 116: Down
+Step 117: Right
+Step 118: Up
+Step 119: Right
+Step 120: Up
+Step 121: Left
+Step 122: Down
+Step 123: Down
+Step 124: Right
+Step 125: Up
+Step 126: Left
+Step 127: Up
+Step 128: Right
+Step 129: Down
+Step 130: Down
+Step 131: Left
+Step 132: Left
+Step 133: Up
+Step 134: Right
+Step 135: Right
+Step 136: Down
+Step 137: Left
+Step 138: Up
+Step 139: Right
+Step 140: Down
+Step 141: Left
+Step 142: Up
+Step 143: Left
+Step 144: Down
+Step 145: Right
+Step 146: Right
+Step 147: Up
+Step 148: Left
+Step 149: Down
+Step 150: Left
+Step 151: Up
+Step 152: Right
+Step 153: Right
+Step 154: Down
+Step 155: Left
+Step 156: Up
+Step 157: Left
+Step 158: Down
+Step 159: Right
+Step 160: Up
+Step 161: Left
+Step 162: Down
+Step 163: Right
+Step 164: Right
+Step 165: Up
+Step 166: Up
+Step 167: Left
+Step 168: Left
+
+Solution Length: 168 moves
+Number of States Generated: 13576
+Number of States Explored: 5256
+
+Goal State:
+0 1 2
+3 4 5
+6 7 8
+Press any key to continue . . .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Graph Search Code
+
+import json
+from collections import deque
+
+# Define possible moves (up, down, left, right)
+MOVES = [(0, -1), (0, 1), (-1, 0), (1, 0)]
+MOVE_NAMES = ['Left', 'Right', 'Up', 'Down']
+
+# Function to check if a move is valid
+def is_valid_move(x, y, size):
+    return 0 <= x < size and 0 <= y < size
+
+# Function to find the blank tile in the current state
+def find_blank_tile(state):
+    for i in range(len(state)):
+        for j in range(len(state[0])):
+            if state[i][j] == 0:
+                return i, j
+
+# Function to generate new states by making valid moves
+def generate_states(state):
+    x, y = find_blank_tile(state)
+    new_states = []
+    for dx, dy in MOVES:
+        new_x, new_y = x + dx, y + dy
+        if is_valid_move(new_x, new_y, len(state)):
+            new_state = [row[:] for row in state]  # Create a copy of the current state
+            new_state[x][y], new_state[new_x][new_y] = new_state[new_x][new_y], new_state[x][y]
+            new_states.append((new_state, MOVE_NAMES[MOVES.index((dx, dy))]))
+    return new_states
+
+# Function to solve the puzzle using Breadth-First Search (BFS)
+def solve_puzzle(initial_state):
+    visited = set()
+    queue = deque([(initial_state, [])])  # Queue stores (state, path)
+    generated_states = 0  # Counter for generated states
+
+    while queue:
+        current_state, path = queue.popleft()
+        generated_states += 1
+        if current_state == GOAL_STATE:
+            return path, generated_states, len(visited)
+
+        if tuple(map(tuple, current_state)) in visited:
+            continue
+
+        visited.add(tuple(map(tuple, current_state)))
+
+        for next_state, move_name in generate_states(current_state):
+            next_path = path + [move_name]
+            queue.append((next_state, next_path))
+
+    return None, generated_states, len(visited)
+
+# Function to print the puzzle state
+def print_puzzle(state):
+    for row in state:
+        print(" ".join(map(str, row)))
+
+# Function to read puzzle information from JSON data
+def read_puzzle_from_json(json_data):
+    puzzle_data = json.loads(json_data)
+    n = puzzle_data["n"]
+    start_state = puzzle_data["start"]
+    goal_state = puzzle_data["goal"]
+    return n, start_state, goal_state
+
+# Main function
+if __name__ == "__main__":
+    # Read puzzle information from JSON
+    json_data = """
+    {
+        "n": 3,
+        "start": [
+            [7, 2, 4],
+            [5, 0, 6],
+            [8, 3, 1]
+        ],
+        "goal": [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8]
+        ]
+    }
+    """
+    puzzle_size, initial_state, GOAL_STATE = read_puzzle_from_json(json_data)
+
+    print("Start State:")
+    print_puzzle(initial_state)
+    print("\nGoal State:")
+    print_puzzle(GOAL_STATE)
+
+    solution_path, generated_states, explored_states = solve_puzzle(initial_state)
+
+    if solution_path:
+        print("\nSolution:")
+        for step, move in enumerate(solution_path, 1):
+            print(f"Step {step}: {move}")
+        print(f"\nSolution Length: {len(solution_path)} moves")
+        print(f"Number of States Generated: {generated_states}")
+        print(f"Number of States Explored: {explored_states}")
+
+        # Print the final state
+        final_state = initial_state
+        for move in solution_path:
+            x, y = find_blank_tile(final_state)
+            move_idx = MOVE_NAMES.index(move)
+            dx, dy = MOVES[move_idx]
+            new_x, new_y = x + dx, y + dy
+            final_state[x][y], final_state[new_x][new_y] = final_state[new_x][new_y], final_state[x][y]
+
+        print("\nFinal State:")
+        print_puzzle(final_state)
+    else:
+        print("\nNo solution found.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Start State:
+7 2 4
+5 0 6
+8 3 1
+
+Goal State:
+0 1 2
+3 4 5
+6 7 8
+
+Solution:
+Step 1: Left
+Step 2: Up
+Step 3: Right
+Step 4: Down
+Step 5: Right
+Step 6: Down
+Step 7: Left
+Step 8: Left
+Step 9: Up
+Step 10: Right
+Step 11: Right
+Step 12: Down
+Step 13: Left
+Step 14: Left
+Step 15: Up
+Step 16: Right
+Step 17: Right
+Step 18: Up
+Step 19: Left
+Step 20: Left
+Step 21: Down
+Step 22: Right
+Step 23: Right
+Step 24: Up
+Step 25: Left
+Step 26: Left
+
+Solution Length: 26 moves
+Number of States Generated: 403100
+Number of States Explored: 164918
+
+Final State:
+0 1 2
+3 4 5
+6 7 8
+Press any key to continue . . .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Backtracking Algorithm
