@@ -1,0 +1,9 @@
+﻿  ConsoleGame.cpp
+  Game.cpp
+  PCGame.cpp
+  Source.cpp
+C:\Users\Cade\Documents\School\Computer Science I\CSC160_Cnichols_FinalProject\CSC160_Cnichols_FinalProject\CSC160_Cnichols_FinalProject\Source.cpp(78,8): warning C4101: 'level': unreferenced local variable
+C:\Users\Cade\Documents\School\Computer Science I\CSC160_Cnichols_FinalProject\CSC160_Cnichols_FinalProject\CSC160_Cnichols_FinalProject\Source.cpp(79,11): warning C4101: 'records': unreferenced local variable
+  Time.cpp
+  Generating Code...
+  CSC160_Cnichols_FinalProject.vcxproj -> C:\Users\Cade\Documents\School\Computer Science I\CSC160_Cnichols_FinalProject\CSC160_Cnichols_FinalProject\Debug\CSC160_Cnichols_FinalProject.exe
