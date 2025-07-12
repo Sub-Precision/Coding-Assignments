@@ -1,0 +1,34 @@
+Q1B.
+Step 1: order the list of keys in ascending order
+Step 2: place the keys in order from left to right primarily, top to bottom secondarily
+Step 3: once all keys have been inserted, the tree is complete and it should naturally follow the rules of a binary search tree
+
+
+Q1C1.
+30, 41, 59, 68, 70, 90, 99, 117, 141, 155
+
+
+Q1C2.
+First, we would need to initialize an empty stack and set the current node to the root of the tree.
+And while the current node is not null or the stack is not empty it must follow these 2 rules:
+a. If the current node is not null, push it onto the stack and set the current node to its left child.
+b. If the current node is null, pop the top node from the stack and output its key value, then set the current node to its right child.
+
+
+Q1D.
+Because there is no way to populate the tree in such a way that the black height is equal on both sides regardless of what node you start with
+
+
+Q1E.
+here is how a rotation works using a left rotation as an example
+steps are the same for right rotation, save for all directions being mirrored
+
+Save the right child of the node as "child".
+Set the right child of the node to the left child of "child".
+If the left child of "child" is not null, set its parent to the node.
+Set the parent of "child" to the parent of the node.
+If the node is the root of the tree, set the root to "child".
+Otherwise, if the node is the left child of its parent, set the left child of the parent to "child".
+Otherwise, set the right child of the parent to "child".
+Set the left child of "child" to the node.
+Set the parent of the node to "child".

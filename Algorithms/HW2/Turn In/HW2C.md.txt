@@ -1,0 +1,11 @@
+3.1: A loop invariant technique is a statement that is proven true at the beginning of every loop, and remains true at the end of the given loop
+
+3.2: The loop invariant is identified through 3 different steps, so the loop invariant is satisfied on lines 25, 34, 44, and 48
+
+3.3: The initialization step, located on line 34 of my code, checks if the current counters, represented by "i" and "j"
+is less than the length of the list it is currently working on
+
+3.4: The maintenence step, located on lines 44 and 48, goes through each element in a list, and sorts them into ascneding order
+
+3.5: The termination step, located on line 25 of my code, simply checks if the list of numbers is greater than 1, most often, this will be true
+and in the event it is not, the program will begin to merge all of the created lists, thus beginning to end the function

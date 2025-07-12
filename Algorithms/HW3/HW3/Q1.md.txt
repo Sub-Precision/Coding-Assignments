@@ -1,0 +1,50 @@
+Q1a.
+For any input of size k, 
+insertion runs at Θ(k^2) in the worst case scenarios. 
+So, the worst case scenario to sort n / k sublists of length k will be (n/k) * Θ(k^2)
+which when simplified simply equals Θ(nk)
+
+Q1b. 
+n total elements are divided into n/k sublists of length k and are sorted.
+Merging the sublists into a single sorted sublist requires us to 
+continuously merge 2 sublists at a time until it becomes one total list
+This will take lg(n/k) steps, and with each one
+we will have to compare the full length of the list 
+so the full thing start to finish will run at Θ(nlg(n/k))
+
+Q1c. 
+For all intents and purposes k in the given equation acts like a constant, 
+and when determining time complexity with respect to n, 
+the equation boils down to Θ(n + nlg(n)) and the first n is negligible due to it only being additive, 
+ultimately making its effect in the grand scheme of things minimal at best
+so the equation boils down to Θ(nlgn)
+
+Q2-1. 
+
+Q2-2a.
+It is true because in time complexity a constant will not make a difference when taken to large numbers
+for example, if we say that n is infinity, the +1 would not make enough of a difference to warrant
+picking a different bound for time complexity as the next level in time complexity is n factorial
+which vastly outgrows any constant that could be added to the exponential growth rate to even be remotely comparable
+
+Q2-2b.
+This is also true, and for the exact same reason, 
+multiplying n by 2 is still a constant that does not matter over time as numbers get very large up to infinity
+especially in comparison to n factorial, once again, being the next highest level in time complexity
+dwarfs any effect doubling the exponent could do in an exponential growth rate
+
+Q2-3.
+Tldr from smallest to largest: f4, f3, f5, f6, f1, f2
+f4 is the slowest growing because it is logn with the powerful addition of a square root, letting it scale to infinity slower than base logn
+f3 comes next because it is quite simply literally the base growth rate of logn
+f5 is the first of the linear time complexities but once again with a square root factor, reducing it's growth in a way that scales to infinity
+f6 is the only function that is quadratic, placing it easily between all nlogn and exponential functions
+f1 The first of the exponential functions, while very hard to tell it grows slower as it remains in the lead for the first billion elements, 
+but it is eventually beaten out by the fastest function due to it's base being a constant, slowing it's scaling as it grows towards infinity
+Then finally f2, both the base and the exponent scale to infinity making it grow much faster than any other function on this list
+
+Q4.
+Recursion Tree method - converts the recurrances of a function into a tree whose nodes represent the costs incurred at various levels of the recursion
+Master Method - provides bounds for recurrences of the form T(n) = aT(n/b) + f(n) where a is greater than or equal to 1, and b is greater than 1 and f(n) is a given bound
+Substitution Method - a bound is guessed and then used in mathematical induction to prove our guess correct
+

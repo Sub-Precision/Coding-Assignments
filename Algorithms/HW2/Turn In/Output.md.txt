@@ -1,0 +1,36 @@
+Time efficiency of Merge sort with 1000 integers.
+        start': 1677547563.1562545 , 'end': 1677547563.1713061 , 'time efficiency': 0.015051603317260742
+Time efficiency of Insertion sort with 1000 integers.
+        start': 1677547563.1713061 , 'end': 1677547563.3202927 , 'time efficiency': 0.1489865779876709
+Merge sort # of comparisons: 8713
+Insertion sort # of comparisons: 246373
+Time efficiency of Merge sort with 10000 integers.
+        start': 1677547563.1562545 , 'end': 1677547563.1713061 , 'time efficiency': 0.19570088386
+Time efficiency of Insertion sort with 10000 integers.
+        start': 1677547563.1713061 , 'end': 1677547563.3202927 , 'time efficiency': 15.71806693077
+Merge sort # of comparisons: 120642
+Insertion sort # of comparisons: 24982755
+Time efficiency of Merge sort with 100000 integers.
+        start': 1677547563.1562545 , 'end': 1677547563.1713061 , 'time efficiency': 2.27627968788
+Time efficiency of Insertion sort with 100000 integers.
+        start': 1677547563.1713061 , 'end': 1677547563.3202927 , 'time efficiency': 1563.39582682
+Merge sort # of comparisons: 1536307
+Insertion sort # of comparisons: 2507389476
+Time efficiency of Merge sort with 250000 integers.
+        start': 1677547563.1562545 , 'end': 1677547563.1713061 , 'time efficiency': 6.032831192016
+Time efficiency of Insertion sort with 250000 integers.
+        start': 1677547563.1713061 , 'end': 1677547563.3202927 , 'time efficiency': 11149.248559
+Merge sort # of comparisons: 4168028
+Insertion sort # of comparisons: 15683795704
+Time efficiency of Merge sort with 500000 integers.
+        start': 1677547563.1562545 , 'end': 1677547563.1713061 , 'time efficiency': 12.0945725440
+Time efficiency of Insertion sort with 500000 integers.
+        start': 1677547563.1713061 , 'end': 1677547563.3202927 , 'time efficiency': 47598.0239975
+Merge sort # of comparisons: 8836552
+Insertion sort # of comparisons: 62434746006
+Time efficiency of Merge sort with 1000000 integers.
+        start': 1677547563.1562545 , 'end': 1677547563.1713061 , 'time efficiency': 25.0390777587
+Time efficiency of Insertion sort with 1000000 integers.
+        start': 1677547563.1713061 , 'end': 1677547563.3202927 , 'time efficiency': 224769.101827
+Merge sort # of comparisons: 18673054
+Insertion sort # of comparisons: 249,837,038,112

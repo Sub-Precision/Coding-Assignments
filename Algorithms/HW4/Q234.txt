@@ -1,0 +1,72 @@
+Q1A+B
+
+1. Create an empty min heap of size k.
+2. Insert the first element of each sub list into the heap along with a key value identifier that indicates which list it belongs to. 
+-The heap should contain all k elements after this step.
+3. While the heap isn't empty:
+	a. Pull the minimum element from the heap (the smallest among all k lists).
+	b. Add this element to the final output sorted list.
+	c. Find the list that the value came from, then delete it from that list.
+	d. If the list is populated, insert the new first element into the heap along with its identifier.
+Return the output sorted list.
+The time complexity of this algorithm is O(n log k), where n is the total number of elements in all the input lists. The reason for this is that each element is inserted into and extracted from the heap exactly once, which takes O(log k) time. There are n elements in total, so the total time complexity is O(n log k).
+
+
+
+Q2
+			USL	SSL	UDL	SDL
+SEARCH(L, K)	O(n)	O(n)	O(n)	O(n)
+INSERT(L, X)	O(n)	O(n)	O(1)	O(1)
+DELETE(L, X)	O(n)	O(n)	O(1)	O(1)
+SUCCESSOR(L, X)	O(1)	O(1)	O(1)	O(1)
+PREDECESSOR(L, X) O(n)	O(n)	O(1)	O(1)
+MINIMUM(L)		O(n)	O(1)	O(n)	O(1)
+MAXIMUM(L)		O(n)	O(1)	O(n)	O(1)
+
+Singly Linked List Both sorted and unsorted: 
+-Search Insert and Delete would all require O(n) times as, 
+	worst case scenario, it would have to search through every single element before finding the one we are looking for, 
+	if the location was known it would be O(1) if the list was sorted, but i have no reason to assume we would know that, 
+	so safest bet is O(n)
+-Successor is O(1) time since it just has to follow the pointer to the very next element in the list, Predessesor however
+	since it is a singly linked list would have to loop through every element in the list in order to reach the element right before
+	as such that will have an O(n) time complexity
+-Max and Min will always have a O(n) time complexity if unsorted and a O(1) time complexity if sorted.
+	If it isn't sorted worst case scenario the program will have to traverse all of the elements to find it.
+	If it is sorted however you can just ping the very first or very last elements in the list to find your max or min
+
+Doubly Linked List Both Sorted and Unsorted: 
+-Since in a doubly linked list we now have a way to traverse the list 
+	forwards as well as backwards, this allows us to achieve a constant time for insertion and deletion as all it has to do is
+	create/delete pointers for itself as well as the previous and next nodes, search however still takes linear time 
+	as worst case scenario the program will still have to look over half of the elements in the entire list
+	which would be O(n/2) which is still O(n) time when simplified
+- Successor and predecessor will always be constant time of O(1) as all that is needed to find either is use the associated pointer
+	in the selected element to get there since you can go forwards or backwards in a doubly linked list
+-Max and Min works exactly the same way as described above for singly linked lists, with the exception of the fact in a doulby linked list
+	the worst case scenario you will only have to traverse half of the elements in the list at most instead of all of them, 
+	this however when simplified still is only a O(n) run time, just with a better constant.
+
+
+
+Q3
+
+If we dont need to store any value that has a key association, then you just have to create a vector where each index is a bit and is stored as an element in an array. Then if any value is present at a given index, the bit is 1, otherwise it is a 0,
+this keeps operations such as insert delete and search running at O(1) time.
+
+
+
+Q4
+
+Since the keys dont have to be unique, we should implement a direct address table using hasing by chaining, 
+and to handle collisions we should have the program create doubly linked lists for any duplicate values associated with a key.
+-Search will remain constant because it's run time will be a constant, just being the number of elements per slot
+divided by the number of slots in the hash table, so this will account for the duplicate keys and keep the time complexity at O(1)
+-Insert will also remain constant time with this program because it will just be added to the head of the doubly linked list every time
+-Delete will stay constant time because since it is a linked list, the address to the node is given.
+
+
+
+EC1: YES
+
+
