@@ -1,0 +1,12 @@
+Name: Cade Nichols
+ID: 107826036
+Structure of program:
+---------------------
+File organization: Nichols_C_HW4.cpp
+Functional organization: main() takes input & prints the desired output.
+
+Status: It works completely
+
+Hardware & Platform I used: 11th Gen Intel(R) Core(TM) i9-11900K @ 3.50GHz   3.50 GHz 32GB RAM (Windows 10 OS)
+
+Compile: extract the archive, and then from a shell run "make". This will create an executable "hw4". Then run ./hw4

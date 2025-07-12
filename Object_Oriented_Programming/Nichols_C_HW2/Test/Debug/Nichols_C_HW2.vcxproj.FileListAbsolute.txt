@@ -1,0 +1,2 @@
+C:\Users\Cade\Documents\School\Object Oriented Programming\Nichols_C_HW2\Nichols_C_HW2\Debug\Nichols_C_HW2.exe
+C:\Users\Cade\Documents\School\Object Oriented Programming\Nichols_C_HW2\Test\Debug\Nichols_C_HW2.exe

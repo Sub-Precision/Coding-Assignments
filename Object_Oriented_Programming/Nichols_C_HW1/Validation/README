@@ -1,0 +1,10 @@
+Name: Cade Nichols
+ID: 107826036
+Structure of program:
+---------------------
+File organization: Nichols_C_HW1.cpp
+Functional organization: main() takes input & prints the desired output.
+
+Status: It works completely
+Hardware & Platform I used: Intel(R) Core(TM) i5-10600K CPU @ 4.10GHz 32GB RAM (Windows 10 OS)
+Compile: extract the archive, and then from a shell run "make". This will create an executable "hw1". Then run ./hw1

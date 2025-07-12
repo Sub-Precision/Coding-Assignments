@@ -1,0 +1,4 @@
+﻿  Source.cpp
+C:\Users\Cade\Documents\School\Object Oriented Programming\Nichols_C_HW4\homework4.2\Source.cpp(46,18): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Cade\Documents\School\Object Oriented Programming\Nichols_C_HW4\homework4.2\Source.cpp(209,11): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  homework4.2.vcxproj -> C:\Users\Cade\Documents\School\Object Oriented Programming\Nichols_C_HW4\homework4.2\Debug\homework4.2.exe

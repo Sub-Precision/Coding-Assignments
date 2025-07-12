@@ -1,0 +1,26 @@
+Name: Cade Nichols
+ID: 107826036
+Structure of program:
+---------------------
+File organization: Nichols_C_HW6.cpp
+Functional organization: main() takes input & prints the desired output.
+
+Status: It works completely
+
+Hardware & Platform I used: 11th Gen Intel(R) Core(TM) i9-11900K @ 3.50GHz   3.50 GHz 32GB RAM (Windows 11 OS)
+
+Compile: extract the archive, and then from a shell run "make". This will create an executable "hw6". Then run ./hw6
+
+2.2: It creates a dog object and proceeds to follow the pointer functions being move and speak and the dog object does move and speak accordingly.
+
+3.1: It prints the menu first, upon making a selection it constructs the selected class object and its parent class being mammal.
+
+3.2: Yes, yes the subsequent classes inherent all the functions of the parent function unless specifically coded otherwise
+
+3.3: Dog would get the overwritten function from Mammal as dog is derived from mammal first and foremost.
+
+3.4: You can access the overwritten function by using the "::" operator to simply call it like a normal class function.
+
+3.5: That is just a product of inheritance, you can use the standard " . " operator to call it as you would any other function as it inherits the function directly.
+
+3.6: Yes, the 3rd generation function is still virtual as the virtual aspect of this function cannot be removed once instilled.
