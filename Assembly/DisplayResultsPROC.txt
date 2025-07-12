@@ -1,0 +1,54 @@
+DisplayResult PROC
+	.data
+	PrintPrompt BYTE "the phrase is now: ",0h
+	tab = 9
+
+	.code
+	;//printing prompt
+	push EDX
+	mov EDX, OFFSET PrintPrompt
+	call WriteString
+	pop EDX
+
+	;//printing answer (cannot use writestring since thestring in esi and from assignment)
+	push edx
+	push ecx
+	push ebx
+	push eax
+	mov edx, 0
+     mov ecx, 0
+     mov ebx, 0
+	mov eax, 0
+	FromTheTop:
+	mov edx, 0
+	mov bl, 3
+	LoopChar:
+		cmp cl, realStrLen
+		je ToTheBottom
+		mov al, [esi + ecx]; this line is the problem
+		; i cannot figure out the correct syntax to get this line to function as intended
+		; if this line was fixed, this whole proc works flawlessly
+		call Writechar
+		inc ecx
+		cmp edx, 7
+		je LoopSpace
+		inc edx
+		jmp LoopChar
+
+	LoopSpace: 
+		cmp bl, 0
+		je FromTheTop
+		mov al, tab
+		call Writechar
+		dec bl
+		jmp LoopSpace
+
+	ToTheBottom:
+	pop ebx
+	pop edx
+	pop ecx
+	pop eax
+	call crlf
+	call WaitMsg
+	ret
+DisplayResult ENDP
