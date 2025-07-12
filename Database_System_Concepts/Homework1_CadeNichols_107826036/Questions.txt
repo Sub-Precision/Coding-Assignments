@@ -1,0 +1,76 @@
+4.1:
+SELECT name, club, position
+FROM players
+WHERE Country = 'USA';
+
+4.2:
+SELECT Country_name
+FROM country
+WHERE No_of_Worldcup_won >= 1;
+
+4.3:
+SELECT Country_name
+FROM country
+WHERE No_of_Worldcup_won = 0;
+
+4.4:
+SELECT P.NAME, P.country
+FROM players AS P, PLAYER_CARD AS C
+WHERE C.PLAYER_ID = P.PLAYER_ID AND (SELECT MAX(YELLOW_CARDS)
+                                     FROM PLAYER_CARD) = YELLOW_CARDS;
+
+4.5:
+SELECT HOST_CITY, COUNT(*)
+FROM match_results
+GROUP BY HOST_CITY;
+
+4.6:
+SELECT C.Country_Name, COUNT(*), SUM(M.Team1_Score), SUM(M.Team2_Score)
+FROM MATCH_RESULTS AS M, COUNTRY AS C
+WHERE M.Team1 = C.Country_Name
+GROUP BY C.Country_Name;
+
+4.7:
+SELECT C.Country_Name, COUNT(*), SUM(M.Team2_Score), SUM(M.Team1_Score)
+FROM MATCH_RESULTS AS M, COUNTRY AS C
+WHERE M.Team2 = C.Country_Name
+GROUP BY C.Country_Name;
+
+4.8:
+Select *
+From Match_Results
+Where Team1 = 'Brazil' or Team2 = 'Brazil';
+
+4.9:
+Select P.Name, P.Country, A.GOALS
+From Players As P, PLAYER_ASSISTS_GOALS AS A
+WHERE A.GOALS >= 1 AND A.Player_ID = P.Player_ID
+Group by P.player_ID
+Order by GOALS desc;
+
+4.10:
+Select P.Name, P.Country, A.GOALS
+From Players As P, PLAYER_ASSISTS_GOALS AS A
+WHERE A.GOALS >= 2 AND A.Player_ID = P.Player_ID
+Group by P.player_ID
+Order by GOALS desc;
+
+5.1: 
+Referential Integrity Constraint violated
+INSERT INTO PLAYER_CARD VALUES (999999, 0, 1)
+
+5.2:
+Entity Integrity Constraint Violated
+INSERT INTO PLAYER_CARD VALUES (NULL, 0, 1)
+
+5.3:
+Key Constraint Violated
+INSERT INTO PLAYER_CARD VALUES (298664, 0, 1)
+
+6.1:
+DELETE FROM COUNTRY WHERE COUNTRY_NAME = "AUSTRALIA";
+
+7.1:
+INSERT INTO COUNTRY VALUES ("DASANI", 99.99, 99, "WORST WATER");
+INSERT INTO COUNTRY VALUES ("FLEX SEAL", 11.11, 11, "PHIL SWIFT");
+INSERT INTO COUNTRY VALUES ("CHEMICAL FROGS", 99.99, 99, "ALEX JONES");
